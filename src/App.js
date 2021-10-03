@@ -189,8 +189,8 @@ const App = () => {
             🔥✨ THE EPIC NFT COLLECTION ✨🔥
           </p>
           <p className="sub-text">
-            Creates a NFT with a totally random swedish word with colorful
-            background 🇸🇪
+            Creates a totally random swedish word and a colorful background NFT
+            🇸🇪
           </p>
           {mintedAmount > 0 && (
             <p className="sub-text">
@@ -211,7 +211,9 @@ const App = () => {
             <>
               <button
                 onClick={askContractToMintNft}
-                className="cta-button connect-wallet-button"
+                className={`cta-button ${
+                  minting ? "loader-button" : "connect-wallet-button"
+                }  `}
                 disabled={minting}
               >
                 {minting ? "Minting your NFT" : "Mint NFT"}
