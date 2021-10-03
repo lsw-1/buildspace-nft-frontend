@@ -38,7 +38,6 @@ const App = () => {
       console.log("Found an authorized account:", account);
       setCurrentAccount(account);
       setupEventListener();
-      getCount();
     } else {
       console.log("No authorized account found");
     }
@@ -84,8 +83,10 @@ const App = () => {
         myEpicNft.abi,
         signer
       );
-      const count = await connectedContract.getAmountMinted();
-      setMintedAmount(count.toNumber());
+      try {
+        const count = await connectedContract.getAmountMinted();
+        setMintedAmount(count.toNumber());
+      } catch (error) {}
     }
   };
 
@@ -163,6 +164,12 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (!isWrongNetwork) {
+      getCount();
+    }
+  }, [isWrongNetwork]);
+
   return (
     <div className="App">
       {isWrongNetwork && (
@@ -178,16 +185,21 @@ const App = () => {
       )}
       <div className="container">
         <div className="header-container">
-          <p className="header gradient-text">My NFT Collection</p>
-          <p className="sub-text">
-            Each unique. Each beautiful. Discover your NFT today.
+          <p className="header gradient-text">
+            🔥✨ THE EPIC NFT COLLECTION ✨🔥
           </p>
           <p className="sub-text">
-            <span
-              style={{ color: "#ff00c8" }}
-            >{`${mintedAmount} out of ${TOTAL_MINT_COUNT}`}</span>{" "}
-            has already been minted
+            Creates a NFT with a totally random swedish word with colorful
+            background 🇸🇪
           </p>
+          {mintedAmount > 0 && (
+            <p className="sub-text">
+              <span
+                style={{ color: "#ff00c8" }}
+              >{`${mintedAmount} out of ${TOTAL_MINT_COUNT}`}</span>{" "}
+              has already been minted
+            </p>
+          )}
           {currentAccount === "" ? (
             <button
               onClick={connectWallet}
